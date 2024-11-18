@@ -17,7 +17,9 @@ request = pc.makeRequestRSpec()
 for i in range(params.nodeCount):
     node = request.RawPC("node" + str(i))
     node.disk_image = "urn:publicid:IDN+wisc.cloudlab.us+image+distribml-PG0:python-setup.node0-nvidia-cuda"
-    # node.addService(pg.Execute(shell="sh", command="/local/repository/setup.sh"))
+
+    node.addService(pg.Execute(shell='sh', command=f"echo {i} /local/node_rank"))
+    node.addService(pg.Execute(shell="sh", command="/local/repository/set_env_var.sh"))
 
 # Output the request RSpec
 pc.printRequestRSpec(request)
