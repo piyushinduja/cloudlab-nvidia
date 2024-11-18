@@ -19,6 +19,7 @@ for i in range(params.nodeCount):
     node.disk_image = "urn:publicid:IDN+wisc.cloudlab.us+image+distribml-PG0:python-setup.node0-nvidia-cuda"
 
     node.addService(pg.Execute(shell='sh', command=f"echo {i} /local/node_rank"))
+    node.addService(pg.Execute(shell='sh', command=f"echo {params.nodeCount} /local/node_count"))
     node.addService(pg.Execute(shell="sh", command="/local/repository/set_env_var.sh"))
 
 # Output the request RSpec
