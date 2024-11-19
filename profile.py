@@ -13,10 +13,15 @@ params = pc.bindParameters()
 # Create a Request object
 request = pc.makeRequestRSpec()
 
+lan = request.LAN("lan")
+
 # Create nodes and set disk image
 for i in range(params.nodeCount):
     node = request.RawPC("node" + str(i))
     node.disk_image = "urn:publicid:IDN+wisc.cloudlab.us+image+distribml-PG0:python-setup.node0-nvidia-cuda"
+
+    iface = node.addInterface("eth1")
+    lan.addInterface(iface)
 
     node.addService(pg.Execute(shell='sh', command=f"echo {i} /local/node_rank"))
     node.addService(pg.Execute(shell='sh', command=f"echo {params.nodeCount} /local/node_count"))
