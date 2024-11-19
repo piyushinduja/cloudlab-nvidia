@@ -23,9 +23,9 @@ for i in range(params.nodeCount):
     iface = node.addInterface("eth1")
     lan.addInterface(iface)
 
-    node.addService(pg.Execute(shell='sh', command=f"echo {i} /local/node_rank"))
+    node.addService(pg.Execute(shell='sh', command="echo {} > /local/node_rank".format(i)))
     node.addService(pg.Execute(shell='sh', command=f"echo {params.nodeCount} /local/node_count"))
-    node.addService(pg.Execute(shell="sh", command="/local/repository/set_env_var.sh"))
+    node.addService(pg.Execute(shell="sh", command="echo {} > /local/node_count".format(params.nodeCount)))
 
 # Output the request RSpec
 pc.printRequestRSpec(request)
