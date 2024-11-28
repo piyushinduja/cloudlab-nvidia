@@ -6,7 +6,7 @@ pc = portal.Context()
 pc.defineParameter("nodeCount", "Number of Nodes", portal.ParameterType.INTEGER, 1)
 pc.defineParameter("phystype",  "Pick a GPU node type",
                    portal.ParameterType.NODETYPE, "",
-                   longDescription="Make sure to select a GPU node for this profile, available hardware can be checked under the Docs dropdown on upper right corner.")
+                   longDescription="Select a GPU node type. Available hardware can be checked under the Docs dropdown in the upper-right corner.")
 params = pc.bindParameters()
 
 request = pc.makeRequestRSpec()
@@ -16,6 +16,9 @@ lan = request.LAN("lan")
 for i in range(params.nodeCount):
     node = request.RawPC("node" + str(i))
     node.disk_image = "urn:publicid:IDN+wisc.cloudlab.us+image+distribml-PG0:python-setup.node0-nvidia-cuda"
+
+    if params.phystype:
+      node.hardware_type = params.phystype
 
     iface = node.addInterface("eth1")
     lan.addInterface(iface)
@@ -27,5 +30,4 @@ for i in range(params.nodeCount):
     echo "RANK={}" | sudo tee -a /etc/environment;
     """.format(params.nodeCount, i)))
 
-# Output the request RSpec
 pc.printRequestRSpec(request)
